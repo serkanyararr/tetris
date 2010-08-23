@@ -1,0 +1,373 @@
+﻿<UserControl x:Class="Tetris.Silverlight.BricksView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Tetris.Silverlight"
+    xmlns:sc="clr-namespace:SilverlightCommands"             
+    xmlns:ctl="clr-namespace:Tetris.Silverlight.Controls" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" KeyUp="UserControl_KeyUp" Height="520" Width="520">
+    <UserControl.Resources>
+        <local:BooleanToVisibilityConverter x:Key="boolToVis"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FF000000"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFA3AEB9" Offset="0"/>
+                        <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                        <GradientStop Color="#FF718597" Offset="0.375"/>
+                        <GradientStop Color="#FF617584" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid ShowGridLines="False">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Color)" To="#FFF0F0F0"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Color)" To="#FFF0F0F0"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Color)" To="#FFF0F000"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[3].(GradientStop.Color)" To="#FFF0F000"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Color)" To="#FFFFFFFF"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Color)" To="#FFF0F0F0"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[2].(GradientStop.Color)" To="#FFE0E000"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(GradientBrush.GradientStops)[3].(GradientStop.Color)" To="#FFFFFFFF"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="Opacity" To=".55"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity" To="1"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unfocused" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="Background" Grid.Column="1" Margin="0,5,0,0" CornerRadius="0" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                                    <Grid Margin="1"  ShowGridLines="False">
+                                        <Path Stroke="Blue" StrokeThickness="2" x:Name="BackgroundGradient">
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathFigureCollection>
+                                                        <PathFigure StartPoint="10,0" IsClosed="True">
+                                                            <PathFigure.Segments>
+                                                                <PolyBezierSegment Points="
+                                                                               30,5 50,-5 75,0
+                                                                               80,10 80,20 75,30
+                                                                               50,25 30,35 10,30
+                                                                               5,20 5,10 10,0"/>
+                                                            </PathFigure.Segments>
+                                                        </PathFigure>
+                                                    </PathFigureCollection>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                            <Path.Fill>
+                                                <LinearGradientBrush x:Name="BackgroundAnimation" StartPoint=".7,0" EndPoint=".7,1" Opacity="1" >
+                                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                                    <GradientStop Color="#FFF0F0F0" Offset="0.5"/>
+                                                    <GradientStop Color="#FFC0C000" Offset="0.5"/>
+                                                    <GradientStop Color="#FFC0C000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Path.Fill>
+                                        </Path>
+                                    </Grid>
+                                </Border>
+                                <ContentPresenter
+                              x:Name="contentPresenter"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                                    Grid.Column="1"
+                                    />
+                                <Rectangle x:Name="DisabledVisualElement" Grid.Column="1" RadiusX="0" RadiusY="3" Fill="#FFFFFFFF" Opacity="0" IsHitTestVisible="false" />
+                                <Path Grid.Column="1" StrokeThickness="3" x:Name="FocusVisualElement" Margin="0,5,0,0" Opacity="0" IsHitTestVisible="false">
+                                    <Path.Stroke>
+                                        <LinearGradientBrush>
+                                            <GradientStop Color="Blue" Offset="0"/>
+                                            <GradientStop Color="Blue" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Path.Stroke>
+                                    <Path.Data>
+                                        <PathGeometry>
+                                            <PathFigureCollection>
+                                                <PathFigure StartPoint="10,0" IsClosed="True">
+                                                    <PathFigure.Segments>
+                                                        <PolyBezierSegment Points="30,5 50,-5 75,0     80,10 80,20 75,30    50,25 30,35 10,30   5,20 5,10 10,0"/>
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathFigureCollection>
+                                        </PathGeometry>
+                                    </Path.Data>
+                                </Path>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="local:SetterValueBindingHelper.PropertyBinding">
+                <Setter.Value>
+                    <local:SetterValueBindingHelper>
+                        <local:SetterValueBindingHelper
+                                Type="System.Windows.Controls.Canvas, System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+                                Property="Left"
+                                Binding="{Binding Path=Left, Mode=TwoWay}"/>
+                        <local:SetterValueBindingHelper
+                                Type="Canvas"
+                                Property="Top"
+                                Binding="{Binding Path=Top, Mode=TwoWay}"/>
+                    </local:SetterValueBindingHelper>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <ctl:ctlBrick PathFillColor="{Binding Path=Color}">
+                        </ctl:ctlBrick>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <Canvas Width="262" Height="334">
+                        </Canvas>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot" ShowGridLines="False" Background="Black" Margin="0,0,10,10">
+        <MediaElement x:Name="medIntro" Source="Drums.mp3" Volume="1" AutoPlay="True" Margin="0,24,0,0"></MediaElement>
+        <MediaElement x:Name="medClick" Source="Click01.mp3" Volume="1" AutoPlay="True" Margin="173,24,105,115"></MediaElement>
+        <Grid x:Name="grdBoard" Height="485" VerticalAlignment="Top" ShowGridLines="False" Margin="5,0,20,0">
+            <Grid.RenderTransform>
+                <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+            </Grid.RenderTransform>
+
+            <!-- Satır Çizgileri -->
+            <StackPanel Width="372" Background="White" HorizontalAlignment="Left" Margin="0,20,0,97">
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+                <Border BorderBrush="Cyan" BorderThickness="0.5" Margin="0,5"/>
+            </StackPanel>
+            <!-- Delikler -->
+            <StackPanel  Width="20" HorizontalAlignment="Left" Margin="0,20,0,0">
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+                <Ellipse Width="10" Height="10" HorizontalAlignment="Left" Fill="Black" Margin="5,5"/>
+            </StackPanel> 
+
+            <StackPanel Margin="0,20,10,10">
+                <TextBox x:Name="txtFocus" Width="0" Height="0" MaxWidth="0" MaxHeight="0"/>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" ShowGridLines="False">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Orientation="Horizontal" Margin="0,0,83,0">
+                    <Grid ShowGridLines="False">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="262"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderBrush="Blue" Grid.Column="0" Grid.Row="1" BorderThickness="2" Margin="20,0,10,0">
+                            <ListBox x:Name="lstBoard" Background="Transparent" ItemsSource="{Binding Bricks}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="0,0,20,0"/>
+                        </Border>
+                        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="180,0,0,0">
+                            <TextBlock Text="T" FontSize="18" Foreground="Red"/>
+                            <TextBlock Text="e" FontSize="18" Foreground="Green"/>
+                            <TextBlock Text="t" FontSize="18" Foreground="Blue"/>
+                            <TextBlock Text="r" FontSize="18" Foreground="Orange"/>
+                            <TextBlock Text="i" FontSize="18" Foreground="Purple"/>
+                            <TextBlock Text="s" FontSize="18" Foreground="DarkGoldenrod"/>
+                            <TextBlock Text="!" FontSize="18" Foreground="Black"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <StackPanel x:Name="pnlIntro" Grid.Column="0" Visibility="{Binding Path=IsIntroVisible, Converter={StaticResource boolToVis}}" Width="162">
+                                <StackPanel Orientation="Horizontal" Width="199">
+                                    <TextBlock Text="T" FontSize="48" Foreground="Red"/>
+                                    <TextBlock Text="e" FontSize="48" Foreground="Green"/>
+                                    <TextBlock Text="t" FontSize="48" Foreground="Blue"/>
+                                    <TextBlock Text="r" FontSize="48" Foreground="Orange"/>
+                                    <TextBlock Text="i" FontSize="48" Foreground="Purple"/>
+                                    <TextBlock Text="s" FontSize="48" Foreground="DarkGoldenrod"/>
+                                    <TextBlock FontSize="48" Foreground="Black" Text="!"/>
+                                </StackPanel>
+                                <TextBlock TextWrapping="Wrap" FontWeight="Normal" FontSize="10" HorizontalAlignment="Center" Width="162" VerticalAlignment="Center" Height="18"><Run Text="      "/><Run Text=" "/><Run Text=" "/><Run Text="© 201"/><Run Text="3"/><Run Text=" "/><Run Text="  "/><Run Text="Serkan Yarar"/></TextBlock>
+                                <TextBlock Text=""/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="Serkan's Programs Inc." TextWrapping="Wrap" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" Height="17" Width="118"/>
+                                    <Image Source="cp.png" Width="20"/>
+                                </StackPanel>
+                                <TextBlock Text="" HorizontalAlignment="Center"/>
+                                <TextBlock Text=""/>
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Foreground="Blue" Text="Oyun Bilgileri:"/>
+                                    <TextBlock Foreground="Blue" Text="---------------------------" FontSize="8" Height="8"/>
+                                    <TextBlock Foreground="Blue" Text="Space: Durdur/Devam Et" FontSize="12"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="M7.5,5 L0,8.5 L7.5,12.5 M0,8.5 L12,8.5" Stroke="Blue" StrokeEndLineCap="Round" StrokeStartLineCap="Round" Fill="Transparent" StrokeThickness="2"/>
+                                        <TextBlock Foreground="Blue" Text=": Sola Kaydır" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="M7.5,5 L0,8.5 L7.5,12.5 M0,8.5 L12,8.5" Stroke="Blue" StrokeEndLineCap="Round" StrokeStartLineCap="Round" Fill="Transparent" StrokeThickness="2">
+                                            <Path.RenderTransform>
+                                                <RotateTransform Angle="180" CenterX="5" CenterY="9"/>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                        <TextBlock Foreground="Blue" Text=": Sağa Kaydır" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="M7.5,5 L0,8.5 L7.5,12.5 M0,8.5 L12,8.5" Stroke="Blue" StrokeEndLineCap="Round" StrokeStartLineCap="Round" Fill="Transparent" StrokeThickness="2">
+                                            <Path.RenderTransform>
+                                                <RotateTransform Angle="270" CenterX="5" CenterY="9"/>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                        <TextBlock Foreground="Blue" Text=": Hızlı İndir" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="M7.5,5 L0,8.5 L7.5,12.5 M0,8.5 L12,8.5" Stroke="Blue" StrokeEndLineCap="Round" StrokeStartLineCap="Round" Fill="Transparent" StrokeThickness="2">
+                                            <Path.RenderTransform>
+                                                <RotateTransform Angle="90" CenterX="5" CenterY="9"/>
+                                            </Path.RenderTransform>
+                                        </Path>
+                                        <TextBlock Foreground="Blue" Text=": Döndür" FontSize="12"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="pnlGameOver" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Path=IsGameOverVisible, Converter={StaticResource boolToVis}}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="Oyun Bitti !" FontSize="20" Foreground="Black"/>
+                                </StackPanel>
+                                <TextBlock Text="(ama oynadığınız için teşekkürler!)" TextWrapping="Wrap" FontWeight="Normal" FontSize="10" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel x:Name="pnlGamePaused" Visibility="{Binding Path=IsGamePausedVisible, Converter={StaticResource boolToVis}}">
+                                <TextBlock Text="Oyun Durduruldu (zZz)" FontSize="16" Foreground="Black" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="1"  Width="80">
+                            <TextBlock Text="Skor" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="txtScore" Text="{Binding Score}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Yüksek Skor" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="txtHiScore" Text="{Binding HiScore}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Satır" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="txtLines" Text="{Binding Lines}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Level" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="txtLevel" Text="{Binding Level}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="Sıradaki" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="txtNext" Text="{Binding Next}" HorizontalAlignment="Right"/>
+                            <Grid Width="120">
+                                <ListBox x:Name="lstNext" Height="80" Background="Transparent" ItemsSource="{Binding NextShapeBricks}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                    <ListBox.RenderTransform>
+                                        <ScaleTransform ScaleX="0.65" ScaleY="0.65" />
+                                    </ListBox.RenderTransform>
+                                </ListBox>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="1"  VerticalAlignment="Bottom" Margin="0,0,0,0">
+                            <Button x:Name="btnStart" Content="Başla" sc:ButtonService.Command="{Binding Path=StartCommand}" IsEnabled="{Binding Path=StartCanExecute}" Click="Button_Click"/>
+                            <Button x:Name="btnPause" Content="Duraklat" sc:ButtonService.Command="{Binding Path=PauseCommand}" IsEnabled="{Binding Path=PauseCanExecute}"/>
+                            <Button x:Name="btnStop" Content="Bitir" sc:ButtonService.Command="{Binding Path=StopCommand}" IsEnabled="{Binding Path=StopCanExecute}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
